@@ -1,0 +1,20 @@
+version: '3.7'
+services:
+  app:
+    image: php:7.3.7-fpm-alpine3.10
+    volumes:
+      - type: volume
+        source: phpsocket
+        target: /var/run
+    ports:
+      - "9000:9000"
+  web:
+    image: nginx:1.17.2-alpine
+    volumes:
+      - type: volume
+        source: phpsocket
+        target: /var/run
+    ports:
+      - "80:80"
+volumes:
+  phpsocket: {}
