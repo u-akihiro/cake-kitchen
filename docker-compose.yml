@@ -1,19 +1,20 @@
 version: '3.7'
 services:
-  app:
-    image: cakephp:1.0
+  php-fpm:
+    # image: php:7.3.7-fpm-alpine3.10
+    build: ./images/php
     volumes:
       - type: volume
         source: phpsocket
-        target: /var/run
+        target: /var/run/php-fpm
     ports:
       - "9000:9000"
-  web:
-    image: nginx:1.17.2-alpine
+  nginx:
+    build: ./images/nginx
     volumes:
       - type: volume
         source: phpsocket
-        target: /var/run
+        target: /var/run/php-fpm
     ports:
       - "80:80"
 volumes:
