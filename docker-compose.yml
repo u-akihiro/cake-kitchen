@@ -4,18 +4,26 @@ services:
     # image: php:7.3.7-fpm-alpine3.10
     build: ./images/php
     volumes:
-      - type: volume
-        source: phpsocket
-        target: /var/run/php-fpm
+      - type: bind
+        source: ./www
+        target: /var/www/
     ports:
       - "9000:9000"
   nginx:
     build: ./images/nginx
     volumes:
-      - type: volume
-        source: phpsocket
-        target: /var/run/php-fpm
+      - type: bind
+        source: ./www
+        target: /var/www
     ports:
       - "80:80"
+    depends_on:
+      - php-fpm
+  mariadb:
+    image: mariadb:10.4.7
+    environment:
+      MYSQL_DATABASE: dev_db
+      MYSQL_USER: dev_user
+      MYSQL_PASSWORD: password
 volumes:
   phpsocket: {}
